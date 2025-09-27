@@ -1,6 +1,8 @@
 package org.example.service;
 
 import jakarta.transaction.Transactional;
+import org.example.Exception.InvalidDataException;
+import org.example.Exception.NotFoundException;
 import org.example.model.Movie;
 import org.example.repository.MovieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +18,18 @@ public class MovieService {
 
     public Movie create(Movie movie) {
         if (movie == null) {
-            throw new RuntimeException("Invalid movie");
+            throw new InvalidDataException("Invalid movie :null");
         }
        return movieRepo.save(movie);
     }
     public Movie read(long id){
        return movieRepo.findById(id)
-                .orElseThrow(()-> new RuntimeException("Movie not found"));
+                .orElseThrow(()-> new NotFoundException("Movie not found " + "ID="+id));
     }
 
     public void update(long id, Movie update){
         if(update ==  null || id <= 0) {
-            throw new RuntimeException("Invalid movie");
+            throw new InvalidDataException("Invalid movie:null");
         }
         //check if exist
        if(movieRepo.existsById(id)){
@@ -39,7 +41,7 @@ public class MovieService {
            movieRepo.save(movie);
        }
        else{
-           throw new RuntimeException("Movie not found");
+           throw new NotFoundException("Movie not found " + "ID=" +id);
        }
     }
 
@@ -48,7 +50,7 @@ public class MovieService {
             movieRepo.deleteById(id);
         }
         else {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found " + "ID=" +id);
         }
     }
 }
