@@ -40,5 +40,3 @@ jobs:
         env:
           DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
           DOCKERHUB_PWD: ${{ secrets.DOCKERHUB_PWD }}
-
-      run: mvn -B spring-boot:build-image -DskipTests
